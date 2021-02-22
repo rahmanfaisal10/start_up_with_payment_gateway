@@ -2,7 +2,7 @@ package response
 
 type BaseResponse struct {
 	Meta Meta        `json:"meta"`
-	Data interface{} `json:"data"`
+	Data interface{} `json:"data,omitempty"`
 }
 
 type Meta struct {

@@ -21,15 +21,16 @@ func (h *userHandler) RegisterUserHandler(c *gin.Context) {
 
 	err := c.ShouldBind(req)
 	if err != nil {
-		errorMessage := response.ErrorValidationResponse(err)
+		errorMessage := gin.H{"error": response.ErrorValidationResponse(err)}
 		resp := response.ResponseAPI("your account cannot to register", "failed", http.StatusUnprocessableEntity, errorMessage)
 		c.JSON(http.StatusUnprocessableEntity, resp)
 		return
 	}
 
-	result, err := h.service.RegisterUser(*req)
+	result, err := h.service.RegisterUserService(*req)
 	if err != nil {
-		resp := response.ResponseAPI("your account cannot to register", "failed", http.StatusBadRequest, nil)
+		errorMessage := gin.H{"error": response.ErrorValidationResponse(err)}
+		resp := response.ResponseAPI("your account cannot to register", "failed", http.StatusBadRequest, errorMessage)
 		c.JSON(http.StatusBadRequest, resp)
 		return
 	}
@@ -37,4 +38,26 @@ func (h *userHandler) RegisterUserHandler(c *gin.Context) {
 	formatter := response.FormaterUserResponse(*result)
 	resp := response.ResponseAPI("your account has been register", "success", http.StatusCreated, formatter)
 	c.JSON(http.StatusCreated, resp)
+}
+
+func (h *userHandler) LoginUserHandler(c *gin.Context) {
+	req := new(user.LoginUserInput)
+
+	err := c.ShouldBind(req)
+	if err != nil {
+		errorMessage := gin.H{"error": response.ErrorValidationResponse(err)}
+		resp := response.ResponseAPI("your account cannot to login", "failed", http.StatusUnprocessableEntity, errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, resp)
+		return
+	}
+
+	_, err = h.service.LoginUserService(*req)
+	if err != nil {
+		errorMessage := gin.H{"error": response.ErrorValidationResponse(err)}
+		resp := response.ResponseAPI("your account cannot to login", "failed", http.StatusBadRequest, errorMessage)
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+	resp := response.ResponseAPI("success to Login", "success", http.StatusAccepted, nil)
+	c.JSON(http.StatusAccepted, resp)
 }
