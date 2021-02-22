@@ -1,11 +1,10 @@
 package main
 
 import (
-	"fmt"
+	"bwastartup/pkg/handler"
+	"bwastartup/pkg/repository"
+	"bwastartup/pkg/service"
 	"log"
-
-	"bwastartup/handler"
-	"bwastartup/user"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
@@ -19,17 +18,18 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	fmt.Println("Connection to Database Success")
 	//init repository, service and handler
-	userRepository := user.InitRepository(db)
-	userServices := user.InitService(userRepository)
-	userHandler := handler.InitHandler(userServices)
+	repository := repository.InitRepository(db)
+	service := service.InitService(repository)
+	handler := handler.InitHandler(service)
 
 	router := gin.Default()
 
 	api := router.Group("api/v1")
-	api.POST("/register", userHandler.RegisterUserHandler)
-	api.POST("/login", userHandler.LoginUserHandler)
+	api.POST("/register", handler.RegisterUserHandler)
+	api.POST("/login", handler.LoginUserHandler)
+	api.POST("/check-email", handler.CheckEmailAvailabilityHandler)
+	api.POST("/avatars", handler.UploadAvatarHandler)
 
 	router.Run()
 

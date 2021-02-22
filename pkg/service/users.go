@@ -1,33 +1,21 @@
-package user
+package service
 
 import (
+	"bwastartup/pkg/model"
+	"bwastartup/pkg/request"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
-type Service interface {
-	RegisterUserService(input RegisterUserInput) (*User, error)
-	LoginUserService(req LoginUserInput) (*User, error)
-	CheckEmailAvailabilityService(req CheckEmailAvailable) (bool, error)
-}
-
-type service struct {
-	repository Repository
-}
-
-func InitService(repository Repository) *service {
-	return &service{repository}
-}
-
-func (s *service) RegisterUserService(input RegisterUserInput) (*User, error) {
+func (s *service) RegisterUserService(input request.RegisterUserInput) (*model.User, error) {
 	// password hash
 	password, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.MinCost)
 	if err != nil {
 		return nil, err
 	}
 
-	users := &User{
+	users := &model.User{
 		Fullname:   input.Fullname,
 		Occupation: input.Occupation,
 		Email:      input.Email,
@@ -36,7 +24,7 @@ func (s *service) RegisterUserService(input RegisterUserInput) (*User, error) {
 		CreatedAt:  time.Now(),
 	}
 
-	result, err := s.repository.createUser(*users)
+	result, err := s.repository.CreateUser(*users)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +32,7 @@ func (s *service) RegisterUserService(input RegisterUserInput) (*User, error) {
 	return &result, nil
 }
 
-func (s *service) LoginUserService(req LoginUserInput) (*User, error) {
+func (s *service) LoginUserService(req request.LoginUserInput) (*model.User, error) {
 	//get data user from database table user
 	user, err := s.repository.GetUserByEmail(req.Email)
 	if err != nil {
@@ -63,7 +51,7 @@ func (s *service) LoginUserService(req LoginUserInput) (*User, error) {
 	return &user, nil
 }
 
-func (s *service) CheckEmailAvailabilityService(req CheckEmailAvailable) (bool, error) {
+func (s *service) CheckEmailAvailabilityService(req request.CheckEmailAvailable) (bool, error) {
 	user, err := s.repository.GetUserByEmail(req.Email)
 	if err != nil {
 		return false, err
@@ -74,4 +62,23 @@ func (s *service) CheckEmailAvailabilityService(req CheckEmailAvailable) (bool, 
 	}
 
 	return false, nil
+}
+
+func (s *service) SaveAvatarService(ID int, fileLocation string) (model.User, error) {
+	/* dapatkan user berdasarkan ID
+	update attribute avatar file name
+	simpan perubahan avatar file name*/
+	user, err := s.repository.GetUserByID(ID)
+	if err != nil {
+		return user, err
+	}
+
+	user.AvatarFilename = fileLocation
+
+	updatedUser, err := s.repository.UpdateUser(user)
+	if err != nil {
+		return user, err
+	}
+
+	return updatedUser, nil
 }

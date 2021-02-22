@@ -1,6 +1,6 @@
 package response
 
-import "bwastartup/user"
+import "bwastartup/pkg/model"
 
 type registerResponse struct {
 	Fullname   string `json:"fullname"`
@@ -9,7 +9,7 @@ type registerResponse struct {
 	Password   string `json:"password"`
 }
 
-func FormaterUserResponse(user user.User) registerResponse {
+func FormaterUserResponse(user model.User) registerResponse {
 	resp := &registerResponse{
 		Fullname:   user.Fullname,
 		Occupation: user.Occupation,

@@ -1,4 +1,4 @@
-package user
+package request
 
 type RegisterUserInput struct {
 	Fullname   string `json:"fullname" binding:"required"`
