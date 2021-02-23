@@ -11,6 +11,7 @@ type Service interface {
 	LoginUserService(req request.LoginUserInput) (*model.User, error)
 	CheckEmailAvailabilityService(req request.CheckEmailAvailable) (bool, error)
 	SaveAvatarService(ID int, fileLocation string) (model.User, error)
+	GetUserByIDService(ID int) (model.User, error)
 }
 
 type service struct {

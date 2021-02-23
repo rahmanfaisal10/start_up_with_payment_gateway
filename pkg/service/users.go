@@ -3,6 +3,7 @@ package service
 import (
 	"bwastartup/pkg/model"
 	"bwastartup/pkg/request"
+	"errors"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -65,9 +66,6 @@ func (s *service) CheckEmailAvailabilityService(req request.CheckEmailAvailable)
 }
 
 func (s *service) SaveAvatarService(ID int, fileLocation string) (model.User, error) {
-	/* dapatkan user berdasarkan ID
-	update attribute avatar file name
-	simpan perubahan avatar file name*/
 	user, err := s.repository.GetUserByID(ID)
 	if err != nil {
 		return user, err
@@ -81,4 +79,17 @@ func (s *service) SaveAvatarService(ID int, fileLocation string) (model.User, er
 	}
 
 	return updatedUser, nil
+}
+
+func (s *service) GetUserByIDService(ID int) (model.User, error) {
+	user, err := s.repository.GetUserByID(ID)
+	if err != nil {
+		return user, err
+	}
+
+	if user.ID == 0 {
+		return user, errors.New("No User found on that email")
+	}
+
+	return user, nil
 }

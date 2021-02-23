@@ -23,16 +23,15 @@ func main() {
 	repository := repository.InitRepository(db)
 	auth := auth.InitAuthorization()
 	service := service.InitService(repository)
-	handler := handler.InitHandler(service, auth)
+	handlerService := handler.InitHandler(service, auth)
 
 	router := gin.Default()
 
 	api := router.Group("api/v1")
-	api.POST("/register", handler.RegisterUserHandler)
-	api.POST("/login", handler.LoginUserHandler)
-	api.POST("/check-email", handler.CheckEmailAvailabilityHandler)
-	api.POST("/avatars", handler.UploadAvatarHandler)
+	api.POST("/register", handlerService.RegisterUserHandler)
+	api.POST("/login", handlerService.LoginUserHandler)
+	api.POST("/check-email", handlerService.CheckEmailAvailabilityHandler)
+	api.POST("/avatars", handler.AuthMiddleware(auth, service), handlerService.UploadAvatarHandler)
 
 	router.Run()
-
 }

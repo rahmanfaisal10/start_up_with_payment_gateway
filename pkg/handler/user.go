@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"bwastartup/pkg/model"
 	"bwastartup/pkg/request"
 	"bwastartup/pkg/response"
 	"fmt"
@@ -117,8 +118,9 @@ func (h *handler) UploadAvatarHandler(c *gin.Context) {
 		return
 	}
 
-	//harusnya dapat dari JWT token
-	userID := 1
+	cuurentUser := c.MustGet("current_user").(model.User)
+	userID := int(cuurentUser.ID)
+	fmt.Println("berapa nilai userID", userID)
 
 	_, err = h.service.SaveAvatarService(userID, path)
 	if err != nil {
