@@ -1,13 +1,15 @@
 package handler
 
 import (
+	"bwastartup/auth"
 	"bwastartup/pkg/service"
 )
 
 type handler struct {
-	service service.Service
+	service       service.Service
+	authorization auth.Auth
 }
 
-func InitHandler(service service.Service) *handler {
-	return &handler{service}
+func InitHandler(service service.Service, authorization auth.Auth) *handler {
+	return &handler{service, authorization}
 }
