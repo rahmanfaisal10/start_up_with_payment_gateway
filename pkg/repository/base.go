@@ -14,8 +14,8 @@ type Repository interface {
 	UpdateUser(user model.User) (model.User, error)
 
 	//Campaign
-	GetAll() (campaign []model.Campaign, err error)
-	GetByUserID(userID string) (campaign []model.Campaign, err error)
+	GetAllCampaign() (campaign []model.Campaign, err error)
+	GetCampaignByUserID(userID string) (campaign []model.Campaign, err error)
 }
 
 type repository struct {

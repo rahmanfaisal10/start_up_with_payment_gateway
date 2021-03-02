@@ -33,5 +33,7 @@ func main() {
 	api.POST("/check-email", handlerService.CheckEmailAvailabilityHandler)
 	api.POST("/avatars", handler.AuthMiddleware(auth, service), handlerService.UploadAvatarHandler)
 
+	api.GET("/list-campaigns", handlerService.ListCampaignHandler)
+
 	router.Run()
 }

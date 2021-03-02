@@ -12,6 +12,8 @@ type Service interface {
 	CheckEmailAvailabilityService(req request.CheckEmailAvailable) (bool, error)
 	SaveAvatarService(ID string, fileLocation string) (model.User, error)
 	GetUserByIDService(ID string) (model.User, error)
+
+	ListCampaign(userID string) (campaign []model.Campaign, err error)
 }
 
 type service struct {
