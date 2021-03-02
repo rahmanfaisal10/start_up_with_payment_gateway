@@ -17,6 +17,8 @@ func (h *handler) ListCampaignHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, resp)
 		return
 	}
-	resp := response.ResponseAPI("succes to list campaigns", "success", http.StatusOK, campaign)
+
+	formatter := response.FormatterAllCampaignResponse(campaign)
+	resp := response.ResponseAPI("succes to list campaigns", "success", http.StatusOK, formatter)
 	c.JSON(http.StatusOK, resp)
 }

@@ -17,3 +17,11 @@ func (r *repository) GetCampaignByUserID(userID string) (campaign []model.Campai
 	}
 	return
 }
+
+func (r *repository) GetCampaignByID(campaignID string) (campaign model.Campaign, err error) {
+	err = r.db.Where("uuid = ?", campaignID).Preload("Users").Preload("CampaignImages").First(&campaign).Error
+	if err != nil {
+		return
+	}
+	return
+}

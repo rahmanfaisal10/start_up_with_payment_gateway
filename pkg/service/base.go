@@ -14,6 +14,7 @@ type Service interface {
 	GetUserByIDService(ID string) (model.User, error)
 
 	ListCampaign(userID string) (campaign []model.Campaign, err error)
+	DetailCampaign(uuid request.DetailCampaignRequest) (model.Campaign, error)
 }
 
 type service struct {

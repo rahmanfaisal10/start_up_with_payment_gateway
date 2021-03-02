@@ -27,6 +27,8 @@ func main() {
 
 	router := gin.Default()
 
+	router.Static("assets/images", "./assets/images")
+
 	api := router.Group("api/v1")
 	api.POST("/register", handlerService.RegisterUserHandler)
 	api.POST("/login", handlerService.LoginUserHandler)
@@ -34,6 +36,7 @@ func main() {
 	api.POST("/avatars", handler.AuthMiddleware(auth, service), handlerService.UploadAvatarHandler)
 
 	api.GET("/list-campaigns", handlerService.ListCampaignHandler)
+	api.GET("/detail-campaign/:uuid", handlerService.DetailCampaignHandler)
 
 	router.Run()
 }
