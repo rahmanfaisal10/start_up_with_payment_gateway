@@ -1,13 +1,14 @@
 package auth
 
 import (
+	"bwastartup/pkg/model"
 	"errors"
 
 	"github.com/dgrijalva/jwt-go"
 )
 
 type Auth interface {
-	GenerateToken(userID int) (string, error)
+	GenerateToken(user model.User) (string, error)
 	ValidationToken(token string) (*jwt.Token, error)
 }
 
@@ -20,9 +21,9 @@ func InitAuthorization() *auth {
 
 var SECRET_KEY = "BWASTARTUP_s3cr3T_k3Y"
 
-func (a *auth) GenerateToken(userID int) (string, error) {
+func (a *auth) GenerateToken(user model.User) (string, error) {
 	claim := jwt.MapClaims{}
-	claim["user_id"] = userID
+	claim["user_id"] = user.UUID
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
 

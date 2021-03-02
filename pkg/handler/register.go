@@ -27,7 +27,7 @@ func (h *handler) RegisterUserHandler(c *gin.Context) {
 		return
 	}
 
-	token, err := h.authorization.GenerateToken(int(result.ID))
+	token, err := h.authorization.GenerateToken(*result)
 	if err != nil {
 		errorMessage := gin.H{"error": err.Error()}
 		resp := response.ResponseAPI(" register failed", "failed", http.StatusBadRequest, errorMessage)

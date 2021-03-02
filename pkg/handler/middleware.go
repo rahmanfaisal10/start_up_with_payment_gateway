@@ -44,7 +44,7 @@ func AuthMiddleware(auth auth.Auth, service service.Service) gin.HandlerFunc {
 			return
 		}
 
-		userID := int(claims["user_id"].(float64))
+		userID := claims["user_id"].(string)
 
 		user, err := service.GetUserByIDService(userID)
 		if err != nil {

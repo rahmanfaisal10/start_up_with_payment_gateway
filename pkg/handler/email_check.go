@@ -26,10 +26,14 @@ func (h *handler) CheckEmailAvailabilityHandler(c *gin.Context) {
 		return
 	}
 
+	//response data message
 	metaMessage := "Email has been registered"
 	if isEmailAvailable {
 		metaMessage = "Email is available"
+		resp := response.ResponseAPI(metaMessage, "success", http.StatusAccepted, isEmailAvailable)
+		c.JSON(http.StatusAccepted, resp)
+		return
 	}
-	resp := response.ResponseAPI(metaMessage, "success", http.StatusAccepted, isEmailAvailable)
+	resp := response.ResponseAPI(metaMessage, "failed", http.StatusBadRequest, isEmailAvailable)
 	c.JSON(http.StatusAccepted, resp)
 }

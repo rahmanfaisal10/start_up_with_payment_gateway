@@ -27,7 +27,7 @@ func (h *handler) LoginUserHandler(c *gin.Context) {
 		return
 	}
 
-	token, err := h.authorization.GenerateToken(int(result.ID))
+	token, err := h.authorization.GenerateToken(*result)
 	if err != nil {
 		errorMessage := gin.H{"error": err.Error()}
 		resp := response.ResponseAPI(" register failed", "failed", http.StatusBadRequest, errorMessage)
@@ -35,6 +35,6 @@ func (h *handler) LoginUserHandler(c *gin.Context) {
 		return
 	}
 
-	resp := response.ResponseAPI("success to Login", "success", http.StatusAccepted, token)
+	resp := response.ResponseAPI("success to Login", "success", http.StatusOK, token)
 	c.JSON(http.StatusAccepted, resp)
 }

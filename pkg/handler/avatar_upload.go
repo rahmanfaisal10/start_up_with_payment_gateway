@@ -13,34 +13,31 @@ func (h *handler) UploadAvatarHandler(c *gin.Context) {
 	file, err := c.FormFile("avatar")
 	if err != nil {
 		data := gin.H{"is_uploaded": false}
-		resp := response.ResponseAPI("email checking failed", "error", http.StatusBadRequest, data)
+		resp := response.ResponseAPI("error get file", "error", http.StatusBadRequest, data)
 		c.JSON(http.StatusBadRequest, resp)
 		return
 	}
 
-	path := fmt.Sprintf("assets/images/%s", file.Filename)
+	currentUser := c.MustGet("current_user").(model.User)
+	path := fmt.Sprintf("assets/images/avatar/%s_%s", currentUser.Fullname, file.Filename)
 
 	err = c.SaveUploadedFile(file, path)
 	if err != nil {
 		data := gin.H{"is_uploaded": false, "errors": err.Error()}
-		resp := response.ResponseAPI("email checking failed", "error", http.StatusBadRequest, data)
+		resp := response.ResponseAPI("save avatar failed", "error", http.StatusBadRequest, data)
 		c.JSON(http.StatusBadRequest, resp)
 		return
 	}
 
-	cuurentUser := c.MustGet("current_user").(model.User)
-	userID := int(cuurentUser.ID)
-	fmt.Println("berapa nilai userID", userID)
-
-	_, err = h.service.SaveAvatarService(userID, path)
+	_, err = h.service.SaveAvatarService(currentUser.UUID.String(), path)
 	if err != nil {
 		data := gin.H{"is_uploaded": false, "errors": err.Error()}
-		resp := response.ResponseAPI("email checking failed", "error", http.StatusBadRequest, data)
+		resp := response.ResponseAPI("avatar upload failed", "error", http.StatusBadRequest, data)
 		c.JSON(http.StatusBadRequest, resp)
 		return
 	}
 
 	data := gin.H{"is_uploaded": true}
-	resp := response.ResponseAPI("email checking failed", "success", http.StatusOK, data)
+	resp := response.ResponseAPI("avatar upload success", "success", http.StatusOK, data)
 	c.JSON(http.StatusOK, resp)
 }
