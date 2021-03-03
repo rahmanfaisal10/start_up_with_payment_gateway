@@ -11,7 +11,7 @@ import (
 func (h *handler) RegisterUserHandler(c *gin.Context) {
 	req := new(request.RegisterUserInput)
 
-	err := c.ShouldBind(req)
+	err := c.ShouldBindJSON(req)
 	if err != nil {
 		errorMessage := gin.H{"error": response.ErrorValidationResponse(err)}
 		resp := response.ResponseAPI("your account cannot to register", "failed", http.StatusUnprocessableEntity, errorMessage)

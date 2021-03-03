@@ -13,7 +13,7 @@ type Campaign struct {
 	ShortDescriptions string          `json:"short_descriptions" db:"short_descriptions"`
 	Descriptions      string          `json:"descriptions" db:"descriptions"`
 	Perks             string          `json:"perks" db:"perks"`
-	BeckerCount       float64         `json:"backer_count" db:"backer_count"`
+	BackerCount       float64         `json:"backer_count" db:"backer_count"`
 	GoalAmount        float64         `json:"goal_amount" db:"goal_amount"`
 	CurrentAmount     float64         `json:"current_amount" db:"current_amount"`
 	Slug              string          `json:"slug" db:"slug"`

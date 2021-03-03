@@ -17,6 +17,7 @@ type Repository interface {
 	GetAllCampaign() (campaign []model.Campaign, err error)
 	GetCampaignByUserID(userID string) (campaign []model.Campaign, err error)
 	GetCampaignByID(campaignID string) (campaign model.Campaign, err error)
+	CreateCampaign(campaign model.Campaign) (model.Campaign, error)
 }
 
 type repository struct {

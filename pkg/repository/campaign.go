@@ -25,3 +25,11 @@ func (r *repository) GetCampaignByID(campaignID string) (campaign model.Campaign
 	}
 	return
 }
+
+func (r *repository) CreateCampaign(campaign model.Campaign) (model.Campaign, error) {
+	err := r.db.Create(&campaign).Error
+	if err != nil {
+		return campaign, err
+	}
+	return campaign, nil
+}

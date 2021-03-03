@@ -30,13 +30,14 @@ func main() {
 	router.Static("assets/images", "./assets/images")
 
 	api := router.Group("api/v1")
-	api.POST("/register", handlerService.RegisterUserHandler)
-	api.POST("/login", handlerService.LoginUserHandler)
-	api.POST("/check-email", handlerService.CheckEmailAvailabilityHandler)
-	api.POST("/avatars", handler.AuthMiddleware(auth, service), handlerService.UploadAvatarHandler)
+	api.POST("/user/register", handlerService.RegisterUserHandler)
+	api.POST("/user/login", handlerService.LoginUserHandler)
+	api.POST("/user/check-email", handlerService.CheckEmailAvailabilityHandler)
+	api.POST("/user/upload/avatars", handler.AuthMiddleware(auth, service), handlerService.UploadAvatarHandler)
 
-	api.GET("/list-campaigns", handlerService.ListCampaignHandler)
-	api.GET("/detail-campaign/:uuid", handlerService.DetailCampaignHandler)
+	api.GET("/campaign/list", handlerService.ListCampaignHandler)
+	api.GET("/campaign/detail/:uuid", handlerService.DetailCampaignHandler)
+	api.POST("/campaign/create", handler.AuthMiddleware(auth, service), handlerService.CreateCampaignHandler)
 
 	router.Run()
 }
