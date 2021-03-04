@@ -3,6 +3,7 @@ package service
 import (
 	"bwastartup/pkg/model"
 	"bwastartup/pkg/request"
+	"errors"
 	"time"
 )
 
@@ -10,6 +11,10 @@ func (s *service) UpdateCampaign(reqID request.DetailCampaignRequest, reqData re
 	campaign, err := s.repository.GetCampaignByID(reqID.UUID)
 	if err != nil {
 		return campaign, err
+	}
+
+	if reqData.User.UUID.String() != campaign.UserID {
+		return campaign, errors.New("Not an owner of the campaign")
 	}
 
 	campaign = model.Campaign{

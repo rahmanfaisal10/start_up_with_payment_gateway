@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"bwastartup/pkg/model"
 	"bwastartup/pkg/request"
 	"bwastartup/pkg/response"
 	"net/http"
@@ -26,6 +27,9 @@ func (h *handler) UpdateCampaignHandler(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, resp)
 		return
 	}
+
+	currentUser := c.MustGet("current_user").(model.User)
+	reqData.User = currentUser
 
 	updateCampaign, err := h.service.UpdateCampaign(*reqID, *reqData)
 	if err != nil {
