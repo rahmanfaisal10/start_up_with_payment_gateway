@@ -33,3 +33,11 @@ func (r *repository) CreateCampaign(campaign model.Campaign) (model.Campaign, er
 	}
 	return campaign, nil
 }
+
+func (r *repository) UpdateCampaign(campaign model.Campaign) (model.Campaign, error) {
+	err := r.db.Where("UUID=?", campaign.UUID).Save(&campaign).Error
+	if err != nil {
+		return campaign, err
+	}
+	return campaign, err
+}
