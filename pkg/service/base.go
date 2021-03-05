@@ -17,6 +17,8 @@ type Service interface {
 	DetailCampaign(uuid request.DetailCampaignRequest) (model.Campaign, error)
 	Createcampaign(request request.CreateCampaignRequest) (model.Campaign, error)
 	UpdateCampaign(reqID request.DetailCampaignRequest, reqData request.CreateCampaignRequest) (model.Campaign, error)
+
+	CreateCampaignImage(request *request.CreateCampaignImageRequest, fileLocation string) (model.CampaignImage, error)
 }
 
 type service struct {

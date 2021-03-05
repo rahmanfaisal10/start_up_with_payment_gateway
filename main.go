@@ -40,5 +40,6 @@ func main() {
 	api.POST("/campaign/create", handler.AuthMiddleware(auth, service), handlerService.CreateCampaignHandler)
 	api.PUT("/campaign/update/:uuid", handler.AuthMiddleware(auth, service), handlerService.UpdateCampaignHandler)
 
+	api.POST("campaign-image/create", handler.AuthMiddleware(auth, service), handlerService.CreateCampaignImageHandler)
 	router.Run()
 }

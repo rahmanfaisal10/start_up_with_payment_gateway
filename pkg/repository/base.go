@@ -19,6 +19,10 @@ type Repository interface {
 	GetCampaignByID(campaignID string) (campaign model.Campaign, err error)
 	CreateCampaign(campaign model.Campaign) (model.Campaign, error)
 	UpdateCampaign(campaign model.Campaign) (model.Campaign, error)
+
+	//campaign image
+	CreateCampaignImage(campaignImage model.CampaignImage) (model.CampaignImage, error)
+	MarkAllImagesAsNonPrimary(campaignID string) (bool, error)
 }
 
 type repository struct {
