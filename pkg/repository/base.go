@@ -23,6 +23,9 @@ type Repository interface {
 	//campaign image
 	CreateCampaignImage(campaignImage model.CampaignImage) (model.CampaignImage, error)
 	MarkAllImagesAsNonPrimary(campaignID string) (bool, error)
+
+	//Transaction
+	GetTransactionByCampaignID(campaignID string) (transaction []model.Transaction, err error)
 }
 
 type repository struct {

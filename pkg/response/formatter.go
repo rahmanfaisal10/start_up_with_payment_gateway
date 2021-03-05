@@ -102,3 +102,25 @@ func FormaterUserResponse(user model.User, token string) registerResponse {
 	}
 	return *resp
 }
+
+//formatter list transaction
+func FormaterCampaignTransactionResponse(transaction model.Transaction) CampaignTransactionFormatter {
+	formatter := &CampaignTransactionFormatter{
+		Id:          transaction.ID,
+		Name:        transaction.Name,
+		Amount:      transaction.Amount,
+		CreatedDate: transaction.CreatedDate,
+	}
+	return *formatter
+}
+
+func FormaterListCampaignTransactionResponse(transaction []model.Transaction) (result []CampaignTransactionFormatter) {
+	if len(transaction) == 0 {
+		return []CampaignTransactionFormatter{}
+	}
+
+	for _, v := range transaction {
+		result = append(result, FormaterCampaignTransactionResponse(v))
+	}
+	return
+}
