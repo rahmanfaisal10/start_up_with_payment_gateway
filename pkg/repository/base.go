@@ -26,6 +26,7 @@ type Repository interface {
 
 	//Transaction
 	GetTransactionByCampaignID(campaignID string) (transaction []model.Transaction, err error)
+	GetTransactionByUserID(userID string) (transaction []model.Transaction, err error)
 }
 
 type repository struct {

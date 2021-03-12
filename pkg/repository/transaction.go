@@ -9,3 +9,11 @@ func (r *repository) GetTransactionByCampaignID(campaignID string) (transaction 
 	}
 	return
 }
+
+func (r *repository) GetTransactionByUserID(userID string) (transaction []model.Transaction, err error) {
+	err = r.db.Where("user_id = ?", userID).Preload("Campaign.CampaignImages", "campaign_images.is_primary = 1").Order("Id desc").Find(&transaction).Error
+	if err != nil {
+		return
+	}
+	return
+}

@@ -3,10 +3,12 @@ package main
 import (
 	"bwastartup/auth"
 	"bwastartup/pkg/handler"
+	"bwastartup/pkg/model"
 	"bwastartup/pkg/repository"
 	"bwastartup/pkg/service"
 	"log"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -19,6 +21,9 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
+	//migration struct to table
+	db.AutoMigrate(model.User{}, model.Campaign{}, model.CampaignImage{}, model.Transaction{})
+
 	//init repository, service and handler
 	repository := repository.InitRepository(db)
 	auth := auth.InitAuthorization()
@@ -26,6 +31,8 @@ func main() {
 	handlerService := handler.InitHandler(service, auth)
 
 	router := gin.Default()
+	router.Use(cors.Default())
+	router.Use(gin.Logger(), gin.Recovery())
 
 	router.Static("assets/images", "./assets/images")
 
@@ -43,5 +50,6 @@ func main() {
 	api.POST("campaign-image/create", handler.AuthMiddleware(auth, service), handlerService.CreateCampaignImageHandler)
 
 	api.GET("transaction/campaign/:campaign_id", handler.AuthMiddleware(auth, service), handlerService.ListTransactionByCampaignIDHandler)
+	api.GET("transaction/campaigns/:user_id", handler.AuthMiddleware(auth, service), handlerService.ListTransactionByUserIDHandler)
 	router.Run()
 }

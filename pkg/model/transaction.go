@@ -7,16 +7,17 @@ import (
 )
 
 type Transaction struct {
-	ID          int       `json:"id" db:"id"`
-	CampaignID  uuid.UUID `json:"campaign_id" db:"campaign_id"`
-	UserID      uuid.UUID `json:"user_id" db:"user_id"`
-	Name        string    `json:"name" db:"name"`
-	Amount      float64   `json:"amount" db:"amount"`
-	Status      string    `json:"status" db:"status"`
-	Code        string    `json:"code" db:"code"`
-	Users       User      `gorm:"foreignKey:UUID;references:UserID"`
-	CreatedBy   string    `json:"created_by" db:"created_by"`
-	CreatedDate time.Time `json:"created_date" db:"created_date"`
-	UpdatedBy   string    `json:"updated_by" db:"updated_by"`
-	UpdatedDate time.Time `json:"updated_date" db:"updated_date"`
+	ID          int       `json:"id" gorm:"primaryKey;type:int;autoIncrement" db:"id"`
+	CampaignID  uuid.UUID `json:"campaign_id" gorm:"type:varchar(50)" db:"campaign_id"`
+	UserID      uuid.UUID `json:"user_id" gorm:"type:varchar(50)" db:"user_id"`
+	Name        string    `json:"name" gorm:"type:varchar(50)" db:"name"`
+	Amount      float64   `json:"amount" gorm:"type:double" db:"amount"`
+	Status      string    `json:"status" gorm:"type:varchar(50)" db:"status"`
+	Code        string    `json:"code" gorm:"type:varchar(50)" db:"code"`
+	Users       User      `gorm:"foreignKey:UserID;references:UUID"`
+	Campaign    Campaign  `gorm:"foreignKey:CampaignID;references:UUID"`
+	CreatedBy   string    `json:"created_by" gorm:"type:varchar(50)" db:"created_by"`
+	CreatedDate time.Time `json:"created_date" gorm:"type:datetime" db:"created_date"`
+	UpdatedBy   string    `json:"updated_by" gorm:"type:varchar(50)" db:"updated_by"`
+	UpdatedDate time.Time `json:"updated_date" gorm:"type:datetime" db:"updated_date"`
 }

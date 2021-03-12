@@ -21,6 +21,7 @@ type Service interface {
 	CreateCampaignImage(request *request.CreateCampaignImageRequest, fileLocation string) (model.CampaignImage, error)
 
 	GetTransactionByCampaignID(campaignID request.ListTransactionRequest) ([]model.Transaction, error)
+	GetTransactionByUserID(request request.ListUserTransactionRequest) ([]model.Transaction, error)
 }
 
 type service struct {

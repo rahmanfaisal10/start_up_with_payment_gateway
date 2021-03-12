@@ -20,7 +20,7 @@ func (h *handler) ListTransactionByCampaignIDHandler(c *gin.Context) {
 	}
 
 	req.User = c.MustGet("current_user").(model.User)
-	
+
 	transaction, err := h.service.GetTransactionByCampaignID(*req)
 	if err != nil {
 		response := response.ResponseAPI("Failed to get campaign's transaction", "failed", http.StatusBadRequest, nil)
@@ -28,7 +28,21 @@ func (h *handler) ListTransactionByCampaignIDHandler(c *gin.Context) {
 		return
 	}
 
-	
+	response := response.ResponseAPI("Success to list campaign's transaction", "success", http.StatusOK, response.FormaterListCampaignTransactionResponse(transaction))
+	c.JSON(http.StatusOK, response)
+}
+
+func (h *handler) ListTransactionByUserIDHandler(c *gin.Context) {
+	currentUser := c.MustGet("current_user").(model.User)
+	req := new(request.ListUserTransactionRequest)
+	req.UserID = currentUser.UUID.String()
+
+	transaction, err := h.service.GetTransactionByUserID(*req)
+	if err != nil {
+		response := response.ResponseAPI("Failed to get campaign's transaction", "failed", http.StatusBadRequest, nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
 
 	response := response.ResponseAPI("Success to list campaign's transaction", "success", http.StatusOK, response.FormaterListCampaignTransactionResponse(transaction))
 	c.JSON(http.StatusOK, response)
